@@ -1,6 +1,6 @@
 import sqlite3
 
-connection = sqlite3.connect("test.db")
+connection = sqlite3.connect("ecommerce.db")
 
 connection.execute('''CREATE TABLE Item (
   ArticleID INT,
