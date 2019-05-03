@@ -1,5 +1,6 @@
 from flask import *
-import sqlite3, hashlib, os
+import sqlite3
+import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -9,9 +10,37 @@ ALLOWED_EXTENSIONS = set(['jpeg', 'jpg', 'png', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+def valid(email, pw):
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        cur.execute("SELECT EmailID, Password FROM Customer")
+        userInfo = cur.fetchall()
+        for info in userInfo:
+            if info[0] == email and info[1] == pw:
+                return True
+        return False
+
+
+def valid_file(file):
+    return '.' in file and \
+        file.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
+def parse(data):
+    output = []
+    for i in range(len(data)):
+        new = []
+        for j in range(7):
+            if i >= len(data):
+                break
+            new.append(data[i])
+        output.append(new)
+    return output
+
+
 def getAccountDetails():
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor();
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor();
         if 'EmailID' not in session:
             loggedIn = False
             first_name = ''
@@ -20,27 +49,30 @@ def getAccountDetails():
             loggedIn = True
             cur.execute("SELECT customerID, FirstName FROM Customer where EmailID = ?", (session['EmailID'], ))
             customerID, FirstName = cur.fetchone()
-    conn.close()
+    edb.close()
     return(loggedIn, first_name, itemNo)
 
+
 @app.route("/")
-def root():
+def home():
     loggedIn, first_name, itemNo = getAccountDetails()
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
         cur.execute('SELECT ArticleID, ItemType, Price, SellerID FROM Item ')
         itemInfo = cur.fetchall()
     itemInfo = parse(itemInfo)
-    return  render_template('home.html', itemInfo=itemInfo, loggedIn=loggedIn, itemNo=itemNo)
+    return render_template('home.html', itemInfo=itemInfo, loggedIn=loggedIn, itemNo=itemNo)
+
 
 @app.route("/add")
 def employee():
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
         cur.execute("SELECT ItemId, ItemName, Quantity, Price, SellerID, FROM Inventory")
         inventory = cur.fetchall()
-    conn.close()
+    edb.close()
     return render_template('add.html', inventory=inventory)
+
 
 @app.route("/addItem", methods=["GET", "POST"])
 def addItem():
@@ -51,66 +83,66 @@ def addItem():
         Price = float(request.form['Price'])
 
         image = request.files['image']
-        if image and allowed_file(image.filename):
+        if image and valid_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         imagename = filename
-        with sqlite3.connect('ecommerce.db') as conn:
+        with sqlite3.connect('ecommerce.db') as edb:
             try:
-                cur = conn.cursor()
+                cur = edb.cursor()
                 cur.execute('''INSERT INTO Item (Name, ArticleID, ItemType, Price, image) VALUES (?, ?, ?, ?, ?)''',
                             (Name, ArticleID, ItemType, Price, imagename))
-                conn.commit()
+                edb.commit()
                 msg = "Added item successfully"
             except:
                 msg="error occured adding item"
-                conn.rollback()
-        conn.close()
+                edb.rollback()
+        edb.close()
         print(msg)
-        return redirect(url_for('root'))
+        return redirect(url_for('home'))
 
 @app.route("/delete")
 def delete():
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
         cur.execute('SELECT Name, ArticleID, ItemType, Price, SellerID, Image FROM Item')
         itemData = cur.fetchall()
-    conn.close()
+    edb.close()
     return render_template('remove.html', data=itemData)
 
 @app.route("/deleteItem")
 def deleteItem():
     ArticleID = request.args.get('ArticleID')
-    with sqlite3.connect('ecommerce.db') as conn:
+    with sqlite3.connect('ecommerce.db') as edb:
         try:
-            cur = conn.cursor()
+            cur = edb.cursor()
             cur.execute('DELETE FROM Item WHERE ArticleID = ?', (ArticleID, ))
-            conn.commit()
+            edb.commit()
             msg = "Deleted Item"
         except:
-            conn.rollback()
+            edb.rollback()
             msg = "Error when deleting"
-    conn.close()
+    edb.close()
     print(msg)
-    return redirect(url_for('root'))
+    return redirect(url_for('home'))
 
 @app.route("/account/profile")
 def viewProfile():
     if 'EmailID' not in session:
-        return redirect(url_for('root'))
+        return redirect(url_for('home'))
     loggedIn, first_name, itemNo = getAccountDetails()
     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
 
 @app.route("/account/profile/edit")
 def editAccount():
     if 'EmailID' not in session:
-        return redirect(url_for('root'))
+        return redirect(url_for('home'))
     loggedIn, first_name, itemNo = getAccountDetails()
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
         cur.execute("SELECT CustomerID, PhoneNumber, FirstName, LastName, EmailID, Address FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
         accountInfo = cur.fetchone()
-    conn.close()
+    edb.close()
     return render_template("editAccount.html", accountInfo=accountInfo, loggedIn=loggedIn,first_name=first_name, itemNo=itemNo)
 
 
@@ -121,23 +153,23 @@ def changePassword():
     if request.method == "POST":
         prevPass = request.form('prevPass')
         newPass = request.form('newPass')
-        with sqlite3.connect('ecommerce.db') as conn:
-            cur = conn.cursor()
+        with sqlite3.connect('ecommerce.db') as edb:
+            cur = edb.cursor()
             cur.execute("SELECT CustomerID, Password FROM Customer WHERE email = ?", (session['EmailID'], ))
             CustomerID, Password = cur.fetchone()
             if Password == prevPass:
                 try:
                     cur.execute("UPDATE Customer SET Password = ? WHERE CustomerID = ?", (newPass, CustomerID))
-                    conn.commit()
+                    edb.commit()
                     info = "Password Updated!"
                 except:
-                    conn.rollback()
+                    edb.rollback()
                     info = "Password did not update"
-                conn.close() # JUST IN CASE
+                edb.close() # JUST IN CASE
                 return render_template("updatePassword.html", info=info)
             else:
                 info = "Incorrect password"
-        conn.close()
+        edb.close()
         return render_template("updatePassword.html", info=info)
     else:
         return render_template("updatePassword")
@@ -150,22 +182,22 @@ def updateAccount():
         LastName = request.form['LastName']
         number = request.form['PhoneNumber']
         Address = request.form['Address']
-        with sqlite3.connect('ecommerce.db') as conn:
+        with sqlite3.connect('ecommerce.db') as edb:
             try:
-                cur = conn.cursor()
+                cur = edb.cursor()
                 cur.execute('UPDATE Customer SET FirstName = ?, LastName = ?, PhoneNumber = ?, Address = ? WHERE EmailID = ?', (FirsttName, LastName, number, Address, EmailID))
-                conn.commit()
+                edb.commit()
                 info = "Updated Account info!"
             except:
-                conn.rollback()
+                edb.rollback()
                 info = "Error when updating account, please try again later"
-        conn.close()
+        edb.close()
         return redirect(url_for('editAccount'))
 
 @app.route("/verifylogin")
 def verifyLogin():
     if 'EmailID' in session:
-        return redirect(url_for('root'))
+        return redirect(url_for('home'))
     else:
         return render_template('login.html', error='')
 
@@ -176,7 +208,7 @@ def login():
         password = request.form['Password']
         if valid(EmailID, password):
             session['email'] = EmailID
-            return  render_template(url_for('root'))
+            return  render_template(url_for('home'))
         else:
             error = 'Invalid Email/Password'
             return render_template('login.html', error=error)
@@ -185,27 +217,107 @@ def login():
 def itemInfo():
     loggedIn, firstName, itenmNo = getAccountDetails()
     ItemID = request.args.get('ArticleID')
-    with sqlite3.connect('ecommerce') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce') as edb:
+        cur = edb.cursor()
         cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
         itemInfo = cur.fetchone()
-    conn.close()
+    edb.close()
     return render_template("itemInfo.html", data=itemInfo, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
 
-@app.route("/addToCart")
-def addToCart():
+@app.route("/ShoppingCart")
+def ShoppingCart():
     if 'EmailID' not in session:
         return redirect(url_for('verifyLogin'))
     loggedIn, FirstName, ItemNo = getAccountDetails()
     EmailID = session['EmailID']
-    with sqlite3.connect('ecommerce.db') as conn:
-        cur = conn.cursor()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
         cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (EmailID, ))
         customer = cur.fetchone()[0]
         cur.execute("SELECT Item.ArticleID, Item.Name, Item.Price, Item.SellerID, Item.Image FROM Item, ShoppingCart WHERE Item.ArticleID = ShoppingCart.ArticleID AND ShoppingCart.CustomerID = ?", (customer, ))
         items = cur.fetchall()
     totalPrice = 0
-
     for item in items:
         totalPrice += item[2]
     return render_template("cart.html", items=items, totalPrice=totalPrice, loggedIn=loggedIn, firstName=FirstName, itemNo=ItemNo)
+
+
+@app.route("/addToCart")
+def addToCart():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    else:
+        ArticleID = int(request.args.get('ArticleID'))
+        with sqlite3.connect('ecommerce.db') as edb:
+            cur = edb.cursor()
+            cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
+            customer = cur.fetchone()
+            try:
+                cur.execute("INSERT INTO _adds_item_to_cart(ArticleID, CustomerID) VALUES (?, ?)", (ArticleID, customer))
+                edb.commit()
+                output = "Added Succesfully"
+            except:
+                edb.rollback()
+                output = "Did not add to cart"
+        edb.close()
+        print(output)
+        return redirect(url_for('home'))
+
+
+@app.route("/removeFromCart")
+def removeFromCart():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    EmailID = session['EmailID']
+    ArticleID = int(request.args.get('ArticleID'))
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (EmailID, ))
+        customerID = cur.fetchone()[0]
+        try:
+            cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = ? AND ArticleID = ?", (customerID, ArticleID))
+            edb.commit()
+            output = "Removed from cart"
+        except:
+            edb.rollback()
+            output = "Could not remove item from cart"
+    edb.close()
+    print(output)
+    return redirect(url_for('home'))
+
+@app.route("/logout")
+def logout():
+    session.pop('EmailID', None)
+    return redirect(url_for('home'))
+
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        pw = request.form['Password']
+        email = request.form['EmailID']
+        first = request.form['FirstName']
+        last = request.form['LastName']
+        number = request.form['PhoneNumber']
+        address = request.form['Address']
+        with sqlite3.connect('ecommerce.db') as edb:
+            try:
+                cur = edb.cursor()
+                cur.execute("INSERT INTO Customer(PhoneNumber, FirstName, LastName, EmailID, Password, Address) VALUES (?, ?, ?, ?, ?, ?)", (number, first, last, email, pw, address))
+                edb.commit()
+                output = "Enjoy you experience!"
+            except:
+                edb.rollback()
+                output = "Sorry could not register at this time, try again later."
+        edb.close()
+        return render_template("login.html", error=output)
+
+@app.route("/registration")
+def registration():
+    return render_template("register.html")
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
