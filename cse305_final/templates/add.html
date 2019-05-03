@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Admin</title>
+</head>
+<body>
+<h2>Add items</h2>
+<form action="/addItem" method="POST" enctype="multipart/form-data">
+	Name: <input type="text" name="name"><br>
+	Price: <input type="text" name="price"><br>
+	SellerID: <input type="text" name="SellerID"><br>
+	Image: <input type="file" name="image"><br>
+	ArticleID: <input type="text" name="articleID"><br>
+	Category: <select name="item type">
+		{% for row in categories %}
+			<option value="{{row[0]}}">{{row[1]}}</option>
+		{% endfor %}
+	</select><br>
+	<input type="submit">
+</form>
+</body>
+</html>
