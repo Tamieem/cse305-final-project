@@ -229,7 +229,7 @@ def login():
         EmailID = request.form['EmailID']
         password = request.form['Password']
         if valid(EmailID, password):
-            session['email'] = EmailID
+            session['EmailID'] = EmailID
             return  render_template(url_for('home'))
         else:
             error = 'Invalid Email/Password'

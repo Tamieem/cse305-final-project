@@ -10,28 +10,22 @@
 	<a href="/">
 		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
 	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
-
 	{% if not loggedIn %}
 	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
+		<a class="link" href="/verifyLogin">Sign In</a>
 	</div>
 	{% else %}
 	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
+		<button class="dropbtn">Hello, <br>{{FirstName}}</button>
 		<div class="dropdown-content">
-			<a href="/account/orders">Your orders</a>
 			<a href="/account/profile">Your profile</a>
 			<hr>
 			<a href="/logout">Sign Out</a>
 		</div>
 	</div>
 	{% endif %}
-	<div id="kart">
-		<a class="link" href="/cart">
+	<div id="Cart">
+		<a class="link" href="/ShoppingCart">
 			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
 			CART {{noOfItems}}
 		</a>
@@ -40,12 +34,12 @@
 
 <div class="display">
 	<h2>Edit profile</h2>
-	<form action="/updateProfile" method="POST">
-		<p>Email:<input type="email" name="email" value={{profileData[1]}} readonly="readonly"></p>
-		<p>First Name:<input type="text" name="firstName" value={{profileData[2]}}></p>
-		<p>Last Name: <input type="text" name="lastName" value={{profileData[3]}}></p>
-		<p>Address: <input type="text" name="address1" value={{profileData[4]}}></p>
-		<p>Phone Number: <input type="text" name="phone" value={{profileData[10]}}></p>
+	<form action="/updateAccount" method="POST">
+		<p>Email:<input type="email" name="EmailID" value={{profileData[1]}} readonly="readonly"></p>
+		<p>First Name:<input type="text" name="FirstName" value={{profileData[2]}}></p>
+		<p>Last Name: <input type="text" name="LastName" value={{profileData[3]}}></p>
+		<p>Address: <input type="text" name="Address" value={{profileData[4]}}></p>
+		<p>Phone Number: <input type="text" name="PhoneNumber" value={{profileData[10]}}></p>
 		<input type="submit" value="Save">
 	</form>
 </div>
