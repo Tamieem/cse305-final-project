@@ -3,11 +3,13 @@ import sqlite3
 connection = sqlite3.connect("ecommerce.db")
 
 connection.execute('''CREATE TABLE Item (
+  Name VARCHAR(45),
   ArticleID INT,
   ItemType VARCHAR(45),
   Price DOUBLE,
   SellerID INT,
-  PRIMARY KEY (ArticleID, SellerID))
+  Image TEXT,
+  PRIMARY KEY (ArticleID))
 ''')
 
 connection.execute('''CREATE TABLE Customer (
@@ -16,7 +18,7 @@ connection.execute('''CREATE TABLE Customer (
   FirstName VARCHAR(45),
   LastName VARCHAR(45),
   EmailID VARCHAR(45),
-  Address VARCHAR(45),
+  Address VARCHAR(100),
   PRIMARY KEY (CustomerID));
 ''')
 
