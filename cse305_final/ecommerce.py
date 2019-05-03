@@ -18,6 +18,7 @@ connection.execute('''CREATE TABLE Customer (
   FirstName VARCHAR(45),
   LastName VARCHAR(45),
   EmailID VARCHAR(45),
+  Password TEXT,
   Address VARCHAR(100),
   PRIMARY KEY (CustomerID));
 ''')

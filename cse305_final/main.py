@@ -112,3 +112,100 @@ def editAccount():
         accountInfo = cur.fetchone()
     conn.close()
     return render_template("editAccount.html", accountInfo=accountInfo, loggedIn=loggedIn,first_name=first_name, itemNo=itemNo)
+
+
+@app.route("/account/profile/updatePassword", methods=["GET", "POST"])
+def changePassword():
+    if 'EamilID' not in session:
+        return redirect(url_for('login'))
+    if request.method == "POST":
+        prevPass = request.form('prevPass')
+        newPass = request.form('newPass')
+        with sqlite3.connect('ecommerce.db') as conn:
+            cur = conn.cursor()
+            cur.execute("SELECT CustomerID, Password FROM Customer WHERE email = ?", (session['EmailID'], ))
+            CustomerID, Password = cur.fetchone()
+            if Password == prevPass:
+                try:
+                    cur.execute("UPDATE Customer SET Password = ? WHERE CustomerID = ?", (newPass, CustomerID))
+                    conn.commit()
+                    info = "Password Updated!"
+                except:
+                    conn.rollback()
+                    info = "Password did not update"
+                conn.close() # JUST IN CASE
+                return render_template("updatePassword.html", info=info)
+            else:
+                info = "Incorrect password"
+        conn.close()
+        return render_template("updatePassword.html", info=info)
+    else:
+        return render_template("updatePassword")
+
+@app.route("/updateAccount", methods=["GET", "POST"])
+def updateAccount():
+    if request.method == "POST":
+        EmailID = request.form['EmailID']
+        FirsttName = request.form['FirstName']
+        LastName = request.form['LastName']
+        number = request.form['PhoneNumber']
+        Address = request.form['Address']
+        with sqlite3.connect('ecommerce.db') as conn:
+            try:
+                cur = conn.cursor()
+                cur.execute('UPDATE Customer SET FirstName = ?, LastName = ?, PhoneNumber = ?, Address = ? WHERE EmailID = ?', (FirsttName, LastName, number, Address, EmailID))
+                conn.commit()
+                info = "Updated Account info!"
+            except:
+                conn.rollback()
+                info = "Error when updating account, please try again later"
+        conn.close()
+        return redirect(url_for('editAccount'))
+
+@app.route("/verifylogin")
+def verifyLogin():
+    if 'EmailID' in session:
+        return redirect(url_for('root'))
+    else:
+        return render_template('login.html', error='')
+
+@app.route("/login", methods = ['POST', 'GET'])
+def login():
+    if request.method == "POST":
+        EmailID = request.form['EmailID']
+        password = request.form['Password']
+        if valid(EmailID, password):
+            session['email'] = EmailID
+            return  render_template(url_for('root'))
+        else:
+            error = 'Invalid Email/Password'
+            return render_template('login.html', error=error)
+
+@app.route("/itemInfo")
+def itemInfo():
+    loggedIn, firstName, itenmNo = getAccountDetails()
+    ItemID = request.args.get('ArticleID')
+    with sqlite3.connect('ecommerce') as conn:
+        cur = conn.cursor()
+        cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
+        itemInfo = cur.fetchone()
+    conn.close()
+    return render_template("itemInfo.html", data=itemInfo, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
+
+@app.route("/addToCart")
+def addToCart():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    loggedIn, FirstName, ItemNo = getAccountDetails()
+    EmailID = session['EmailID']
+    with sqlite3.connect('ecommerce.db') as conn:
+        cur = conn.cursor()
+        cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (EmailID, ))
+        customer = cur.fetchone()[0]
+        cur.execute("SELECT Item.ArticleID, Item.Name, Item.Price, Item.SellerID, Item.Image FROM Item, ShoppingCart WHERE Item.ArticleID = ShoppingCart.ArticleID AND ShoppingCart.CustomerID = ?", (customer, ))
+        items = cur.fetchall()
+    totalPrice = 0
+
+    for item in items:
+        totalPrice += item[2]
+    return render_template("cart.html", items=items, totalPrice=totalPrice, loggedIn=loggedIn, firstName=FirstName, itemNo=ItemNo)
