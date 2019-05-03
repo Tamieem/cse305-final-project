@@ -47,11 +47,24 @@ def getAccountDetails():
             itemNo = 0
         else:
             loggedIn = True
-            cur.execute("SELECT customerID, FirstName FROM Customer where EmailID = ?", (session['EmailID'], ))
+            cur.execute("SELECT CustomerID, FirstName FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
             customerID, FirstName = cur.fetchone()
     edb.close()
     return(loggedIn, first_name, itemNo)
 
+
+def getItemDetails():
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        if 'ArticleID' not in session:
+            itemName = ''
+            Price = 0
+            SellerID = 0
+        else:
+            cur.execute("SELECT ArticleID, SellerID, Name, Price FROM Item WHERE ArticleID = ? ", session['ArticleID'], )
+            itemID, SellerID, itemName, Price = cur.fetchone()
+    edb.close()
+    return (itemID, SellerID, itemName, Price)
 
 @app.route("/")
 def home():
@@ -221,8 +234,39 @@ def itemInfo():
         cur = edb.cursor()
         cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
         itemInfo = cur.fetchone()
+        cur.execute('SELECT DetailedReview, Ratings, CustomerID FROM Reviews WHERE ArticleID = ?', (ItemID))
+        reviewData = cur.fetchone()
     edb.close()
-    return render_template("itemInfo.html", data=itemInfo, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
+    return render_template("itemInfo.html", data=itemInfo, reviews=reviewData, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
+
+@app.route("/createReview", methods=['GET', 'POST'])
+def review():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    loggedIn, FirstName, ItemNo = getAccountDetails()
+    if 'ArticleID' not in session:
+        return render_template('404.html')
+    itemID, SellerID, itemName, Price = getItemDetails()
+    if request.method == "POST":
+        review = request.form['DetailedReview']
+        rating = request.form['Ratings']
+        with sqlite3.connect('ecommerce.db') as edb:
+            try:
+                cur = edb.cursor()
+                cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
+                customer = cur.fetchone()[0]
+                cur.execute('INSERT INTO Reviews (ArticleID, SellerID, CustomerID, Ratings, DetailedReview) VALUES (?, ?, ?, ?, ?)',
+                    (itemID, SellerID, customer, rating, review))
+                edb.commit()
+                output = "Added Review!"
+            except:
+                edb.rollback()
+                output = "Error when adding review"
+        print(output)
+        edb.close()
+        return redirect(url_for('itemInfo'))
+
+
 
 @app.route("/ShoppingCart")
 def ShoppingCart():
@@ -315,8 +359,6 @@ def register():
 @app.route("/registration")
 def registration():
     return render_template("register.html")
-
-
 
 
 if __name__ == '__main__':
