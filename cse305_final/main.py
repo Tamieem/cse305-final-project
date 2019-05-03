@@ -66,6 +66,7 @@ def getItemDetails():
     edb.close()
     return (itemID, SellerID, itemName, Price)
 
+
 @app.route("/")
 def home():
     loggedIn, first_name, itemNo = getAccountDetails()
@@ -114,6 +115,7 @@ def addItem():
         print(msg)
         return redirect(url_for('home'))
 
+
 @app.route("/delete")
 def delete():
     with sqlite3.connect('ecommerce.db') as edb:
@@ -122,6 +124,7 @@ def delete():
         itemData = cur.fetchall()
     edb.close()
     return render_template('remove.html', data=itemData)
+
 
 @app.route("/deleteItem")
 def deleteItem():
@@ -139,12 +142,14 @@ def deleteItem():
     print(msg)
     return redirect(url_for('home'))
 
+
 @app.route("/account/profile")
 def viewProfile():
     if 'EmailID' not in session:
         return redirect(url_for('home'))
     loggedIn, first_name, itemNo = getAccountDetails()
     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
+
 
 @app.route("/account/profile/edit")
 def editAccount():
@@ -187,6 +192,7 @@ def changePassword():
     else:
         return render_template("updatePassword")
 
+
 @app.route("/updateAccount", methods=["GET", "POST"])
 def updateAccount():
     if request.method == "POST":
@@ -200,12 +206,14 @@ def updateAccount():
                 cur = edb.cursor()
                 cur.execute('UPDATE Customer SET FirstName = ?, LastName = ?, PhoneNumber = ?, Address = ? WHERE EmailID = ?', (FirsttName, LastName, number, Address, EmailID))
                 edb.commit()
-                info = "Updated Account info!"
+                output = "Updated Account info!"
             except:
                 edb.rollback()
-                info = "Error when updating account, please try again later"
+                output = "Error when updating account, please try again later"
+        print(output)
         edb.close()
         return redirect(url_for('editAccount'))
+
 
 @app.route("/verifylogin")
 def verifyLogin():
@@ -213,6 +221,7 @@ def verifyLogin():
         return redirect(url_for('home'))
     else:
         return render_template('login.html', error='')
+
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
@@ -226,6 +235,7 @@ def login():
             error = 'Invalid Email/Password'
             return render_template('login.html', error=error)
 
+
 @app.route("/itemInfo")
 def itemInfo():
     loggedIn, firstName, itenmNo = getAccountDetails()
@@ -238,6 +248,7 @@ def itemInfo():
         reviewData = cur.fetchone()
     edb.close()
     return render_template("itemInfo.html", data=itemInfo, reviews=reviewData, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
+
 
 @app.route("/createReview", methods=['GET', 'POST'])
 def review():
@@ -265,7 +276,6 @@ def review():
         print(output)
         edb.close()
         return redirect(url_for('itemInfo'))
-
 
 
 @app.route("/ShoppingCart")
@@ -329,6 +339,7 @@ def removeFromCart():
     print(output)
     return redirect(url_for('home'))
 
+
 @app.route("/logout")
 def logout():
     session.pop('EmailID', None)
@@ -355,6 +366,7 @@ def register():
                 output = "Sorry could not register at this time, try again later."
         edb.close()
         return render_template("login.html", error=output)
+
 
 @app.route("/registration")
 def registration():
