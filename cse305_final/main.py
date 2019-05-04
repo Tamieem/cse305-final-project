@@ -1,6 +1,7 @@
 from flask import *
 import sqlite3
 import os
+import random
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -48,10 +49,11 @@ def getAccountDetails():
         else:
             loggedIn = True
             cur.execute("SELECT CustomerID, FirstName FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
-            customerID, FirstName = cur.fetchone()
+            customerID, first_name = cur.fetchone()
+            cur.execute("SELECT count(ArticleID) FROM ShoppingCart WHERE CustomerID = ?", (customerID, ))
+            itemNo = cur.fetchone()[0]
     edb.close()
     return(loggedIn, first_name, itemNo)
-
 
 def getItemDetails():
     with sqlite3.connect('ecommerce.db') as edb:
@@ -166,7 +168,7 @@ def editAccount():
 
 @app.route("/account/profile/updatePassword", methods=["GET", "POST"])
 def changePassword():
-    if 'EamilID' not in session:
+    if 'EmailID' not in session:
         return redirect(url_for('login'))
     if request.method == "POST":
         prevPass = request.form('prevPass')
@@ -229,10 +231,11 @@ def login():
         EmailID = request.form['EmailID']
         password = request.form['Password']
         if valid(EmailID, password):
-            session['email'] = EmailID
-            return  render_template(url_for('home'))
+            session['EmailID'] = EmailID
+            return redirect(url_for('home'))
         else:
             error = 'Invalid Email/Password'
+            print(error)
             return render_template('login.html', error=error)
 
 
@@ -240,7 +243,7 @@ def login():
 def itemInfo():
     loggedIn, firstName, itenmNo = getAccountDetails()
     ItemID = request.args.get('ArticleID')
-    with sqlite3.connect('ecommerce') as edb:
+    with sqlite3.connect('ecommerce.db') as edb:
         cur = edb.cursor()
         cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
         itemInfo = cur.fetchone()
@@ -349,6 +352,7 @@ def logout():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
+        id = random.randint(1,1000001)
         pw = request.form['Password']
         email = request.form['EmailID']
         first = request.form['FirstName']
@@ -358,13 +362,14 @@ def register():
         with sqlite3.connect('ecommerce.db') as edb:
             try:
                 cur = edb.cursor()
-                cur.execute("INSERT INTO Customer(PhoneNumber, FirstName, LastName, EmailID, Password, Address) VALUES (?, ?, ?, ?, ?, ?)", (number, first, last, email, pw, address))
+                cur.execute("INSERT INTO Customer(CustomerID,PhoneNumber, FirstName, LastName, EmailID, Password, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", (id, number, first, last, email, pw, address))
                 edb.commit()
                 output = "Enjoy you experience!"
             except:
                 edb.rollback()
                 output = "Sorry could not register at this time, try again later."
         edb.close()
+        print(output)
         return render_template("login.html", error=output)
 
 
