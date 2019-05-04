@@ -218,7 +218,7 @@ def updateAccount():
                 output = "Error when updating account, please try again later"
         print(output)
         edb.close()
-        return redirect(url_for('editAccount'))
+        return redirect(url_for('viewProfile'))
 
 
 @app.route("/verifylogin")
