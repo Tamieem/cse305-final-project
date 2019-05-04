@@ -370,6 +370,7 @@ def checkout():
         items = cur.fetchall()
         totalPrice = 0
         string = ""
+        error = False
         for item in items:
             totalPrice += item[2]
             string += item[1] + " "
@@ -380,13 +381,16 @@ def checkout():
                 cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
                 cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
                 edb.commit()
+                cur.execute("SELECT ArticleID FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
+                items = cur.fetchall()
                 output = "Order successfully placed"
             except:
                 edb.rollback()
                 output = "Could not place order"
+                error = True
         edb.close()
         print(output)
-        return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice)
+        return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice, error=error)
     else:
         return redirect(url_for('ShoppingCart'))
 
