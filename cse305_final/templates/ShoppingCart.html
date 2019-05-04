@@ -53,6 +53,8 @@
 		</div>
 	</div>
 </div>
-	<a href="/checkout">Confirm checkout</a>
+	{% if totalPrice %}
+		<a href="/checkout">Confirm checkout</a>
+	{% endif %}
 </body>
 </html>
