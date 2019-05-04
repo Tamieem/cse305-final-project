@@ -71,7 +71,9 @@ connection.execute('''INSERT INTO Shipment VALUES(0002, "Regular", "123 Main Str
 ''')
 
 connection.execute('''CREATE TABLE Orders (
-  OrderID INT  ,
+  CustomerID INT,
+  OrderID INT,
+  Items TEXT,
   TotalPrice DOUBLE NULL,
   PlacedOn DATE NULL,
   PRIMARY KEY (OrderID));

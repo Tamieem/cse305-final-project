@@ -2,6 +2,7 @@ from flask import *
 import sqlite3
 import os
 import random
+import datetime
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -297,6 +298,7 @@ def ShoppingCart():
         customer = cur.fetchone()[0]
         cur.execute("SELECT Item.ArticleID, Item.Name, Item.Price, Item.SellerID, Item.Image FROM Item, ShoppingCart WHERE Item.ArticleID = ShoppingCart.ArticleID AND ShoppingCart.CustomerID = ?", (customer, ))
         items = cur.fetchall()
+    edb.close()
     totalPrice = 0
     for item in items:
         totalPrice += item[2]
@@ -315,13 +317,13 @@ def addToCart():
             customer = cur.fetchone()[0]
             cur.execute("SELECT Price FROM Item WHERE ArticleID = ?", (ArticleID, ))
             price = cur.fetchone()[0]
-            #try:
-            cur.execute("INSERT INTO ShoppingCart(ArticleID, CustomerID, TotalPrice, PricePerItem, QuantityOfItems, ItemsBought) VALUES (?, ?, ?, ?, ?, ?)", (ArticleID, customer, price, price, 1, 1))
-            edb.commit()
-            output = "Added Succesfully"
-            #except:
-            #    edb.rollback()
-            #    output = "Did not add to cart"
+            try:
+                cur.execute("INSERT INTO ShoppingCart(ArticleID, CustomerID, TotalPrice, PricePerItem, QuantityOfItems, ItemsBought) VALUES (?, ?, ?, ?, ?, ?)", (ArticleID, customer, price, price, 1, 1))
+                edb.commit()
+                output = "Added Succesfully"
+            except:
+                edb.rollback()
+                output = "Did not add to cart"
         edb.close()
         print(output)
         return redirect(url_for('home'))
@@ -348,6 +350,40 @@ def removeFromCart():
     print(output)
     return redirect(url_for('home'))
 
+
+
+@app.route("/checkout")
+def checkout():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    loggedIn, FirstName, ItemNo = getAccountDetails()
+    EmailID = session['EmailID']
+    orderID = random.randint(1,10000001)
+    now = datetime.datetime.now()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (EmailID, ))
+        customer = cur.fetchone()[0]
+        cur.execute("SELECT Address FROM Customer WHERE CustomerID = ?", (customer, ))
+        address = cur.fetchone()[0]
+        cur.execute("SELECT Item.ArticleID, Item.Name, Item.Price, Item.SellerID, Item.Image FROM Item, ShoppingCart WHERE Item.ArticleID = ShoppingCart.ArticleID AND ShoppingCart.CustomerID = ?", (customer, ))
+        items = cur.fetchall()
+        totalPrice = 0
+        string = ""
+        for item in items:
+            totalPrice += item[2]
+            string += item[1] + " "
+        try:
+            cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
+            cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = customer")
+            edb.commit()
+            output = "Order successfully placed"
+        except:
+            edb.rollback()
+            output= "Could not place order"
+    edb.close()
+    print(output)
+    return render_template("checkout.html", orderId=orderID, now=now, name=FirstName, address=address)
 
 @app.route("/logout")
 def logout():
