@@ -374,25 +374,15 @@ def checkout():
         for item in items:
             totalPrice += item[2]
             string += item[1] + " "
+        cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
+        cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
+        edb.commit()
+        output = "Order successfully placed"
     edb.close()
-    if totalPrice != 0:
-        with sqlite3.connect('ecommerce.db') as edb:
-            try:
-                cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
-                cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
-                edb.commit()
-                cur.execute("SELECT ArticleID FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
-                items = cur.fetchall()
-                output = "Order successfully placed"
-            except:
-                edb.rollback()
-                output = "Could not place order"
-                error = True
-        edb.close()
-        print(output)
-        return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice, error=error)
-    else:
-        return redirect(url_for('ShoppingCart'))
+    print(output)
+    return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice, error=error)
+    # else:
+    #     return redirect(url_for('ShoppingCart'))
 
 
 @app.route("/logout")
