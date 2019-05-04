@@ -32,6 +32,13 @@ connection.execute('''CREATE TABLE Customer (
   PRIMARY KEY (CustomerID));
 ''')
 
+connection.execute('''INSERT INTO Customer VALUES (0001, 3476586391, "Mo", "Jahan", "mohammed.jahan@stonybrook.edu", "123", "123 Main St");
+''')
+connection.execute('''INSERT INTO Customer VALUES (0002, 1234567890, "Tamieem", "Jaffary", "tamieem.jaffary@stonybrook.edu" , "123", "456 Stony Book");
+''')
+connection.execute('''INSERT INTO Customer VALUES (0003, 0987654321, "Rahim", "Ahamed", "rahim.ahamed@stonybrook.edu", "123", "789 New York");
+''')
+
 connection.execute('''CREATE TABLE Payment (
   OrderID INT  ,
   PaymentType VARCHAR(45),
@@ -124,9 +131,9 @@ connection.execute('''CREATE TABLE ShoppingCart(
     REFERENCES Item(ArticleID));
 ''')
 
-connection.execute('''INSERT INTO ShoppingCart VALUES(0001, 802, '800 2', '1 1', '0001 0002');
+connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0001, 0001, 802, '800 2', '1 1', '0001 0002');
 ''')
-connection.execute('''INSERT INTO ShoppingCart VALUES(0002, 1642, '800 2', '2 21', '0001 0002');
+connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0002, 0002, 1642, '800 2', '2 21', '0001 0002');
 ''')
 
 connection.execute('''CREATE TABLE Inventory(

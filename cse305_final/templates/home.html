@@ -36,31 +36,23 @@
 	<div>
 		<h2>Items</h2>
 		{% for data in itemInfo %}
-		<table>
-			<tr id="productName">
-				{% for row in data %}
-				<td>
-					{{row[1]}}
-				</td>
-				{% endfor %}
-			</tr>
-			<tr id="productImage">
-				{% for row in data %}
-				<td>
-					<a href="/itemInfo?productId={{row[0]}}">
-						<img src={{ url_for('static', filename='uploads/' + row[4]) }} id="itemImage" />
-					</a>
-				</td>
-				{% endfor %}
-			</tr>
-			<tr id="productPrice">
-				{% for row in data %}
-				<td>
-					${{row[2]}}
-				</td>
-				{% endfor %}
-			</tr>
-		</table>
+				<table>
+					<tr id="Name">
+						<td>
+							{{data[0]}}
+						</td>
+				</tr>
+				<tr id="Image">
+					<td>
+						<a href="/productInfo?productId={{data[1]}}">
+						</a>
+					</td>
+				</tr>
+				<tr id="Price">
+					<td>
+					</td>
+				</tr>
+			</table>
 		{% endfor %}
 	</div>
 </div>

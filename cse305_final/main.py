@@ -74,7 +74,7 @@ def home():
     loggedIn, first_name, itemNo = getAccountDetails()
     with sqlite3.connect('ecommerce.db') as edb:
         cur = edb.cursor()
-        cur.execute('SELECT ArticleID, ItemType, Price, SellerID FROM Item ')
+        cur.execute('SELECT Name, ArticleID, ItemType, Price, SellerID FROM Item ')
         itemInfo = cur.fetchall()
     itemInfo = parse(itemInfo)
     return render_template('home.html', itemInfo=itemInfo, loggedIn=loggedIn, itemNo=itemNo)
@@ -250,7 +250,7 @@ def itemInfo():
         cur.execute('SELECT DetailedReview, Ratings, CustomerID FROM Reviews WHERE ArticleID = ?', (ItemID))
         reviewData = cur.fetchone()
     edb.close()
-    return render_template("itemInfo.html", data=itemInfo, reviews=reviewData, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
+    return render_template("itemInfo.html", itemInfo=itemInfo, reviews=reviewData, loggedIn=loggedIn, firstName=firstName, itemNo=itenmNo)
 
 
 @app.route("/createReview", methods=['GET', 'POST'])
