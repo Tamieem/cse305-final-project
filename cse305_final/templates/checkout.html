@@ -13,7 +13,6 @@
 </div>
 <div class="display">
 
-	{% if {{error}} %}
 	<div>
 		<h2>Order ID: {{orderID}}</h2>
         <h4>FedEX will be shipping this order to
@@ -23,12 +22,6 @@
 			${{totalPrice}}0 charged to Credit Card</h4>
 		<a href="/">Return to HomePage</a>
     </div>
-	{% else %}
-	<div>
-		<h2>Error processing checkout</h2>
-		<a href="/">Return to HomePage</a>
-    </div>
-	{% endif %}
 
 </div>
 </body>
