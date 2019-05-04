@@ -131,11 +131,6 @@ connection.execute('''CREATE TABLE ShoppingCart(
     REFERENCES Item(ArticleID));
 ''')
 
-connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0001, 0001, 802, '800 2', '1 1', '0001 0002');
-''')
-connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0002, 0002, 1642, '800 2', '2 21', '0001 0002');
-''')
-
 connection.execute('''CREATE TABLE Inventory(
   ItemID INT,
   ItemName VARCHAR(45),
