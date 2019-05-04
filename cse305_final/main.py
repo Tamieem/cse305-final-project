@@ -312,14 +312,16 @@ def addToCart():
         with sqlite3.connect('ecommerce.db') as edb:
             cur = edb.cursor()
             cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
-            customer = cur.fetchone()
-            try:
-                cur.execute("INSERT INTO ShoppingCart(ArticleID, CustomerID) VALUES (?, ?)", (ArticleID, customer))
-                edb.commit()
-                output = "Added Succesfully"
-            except:
-                edb.rollback()
-                output = "Did not add to cart"
+            customer = cur.fetchone()[0]
+            cur.execute("SELECT Price FROM Item WHERE ArticleID = ?", (ArticleID, ))
+            price = cur.fetchone()[0]
+            #try:
+            cur.execute("INSERT INTO ShoppingCart(ArticleID, CustomerID, TotalPrice, PricePerItem, QuantityOfItems, ItemsBought) VALUES (?, ?, ?, ?, ?, ?)", (ArticleID, customer, price, price, 1, 1))
+            edb.commit()
+            output = "Added Succesfully"
+            #except:
+            #    edb.rollback()
+            #    output = "Did not add to cart"
         edb.close()
         print(output)
         return redirect(url_for('home'))

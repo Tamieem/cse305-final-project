@@ -119,11 +119,10 @@ connection.execute('''INSERT INTO Employee VALUES(0001, 'Employee', '2012-03-09'
 connection.execute('''CREATE TABLE ShoppingCart(
   ArticleID INT,
   CustomerID INT,
-  ShoppingCartID INT,
   TotalPrice DOUBLE,
-  PricePerItem VARCHAR(100),
-  QuantityOfItems VARCHAR(100),
-  ItemsBought VARCHAR(100),
+  PricePerItem DOUBLE,
+  QuantityOfItems DOUBLE,
+  ItemsBought DOUBLE,
   PRIMARY KEY (CustomerID, ArticleID),
   FOREIGN KEY (CustomerID)
     REFERENCES Customer(CustomerID),
@@ -131,10 +130,7 @@ connection.execute('''CREATE TABLE ShoppingCart(
     REFERENCES Item(ArticleID));
 ''')
 
-connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0001, 0001, 802, '800 2', '1 1', '0001 0002');
-''')
-connection.execute('''INSERT INTO ShoppingCart VALUES('0001 0002', 0002, 0002, 1642, '800 2', '2 21', '0001 0002');
-''')
+
 
 connection.execute('''CREATE TABLE Inventory(
   ItemID INT,
