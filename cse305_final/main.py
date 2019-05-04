@@ -166,7 +166,7 @@ def editAccount():
     return render_template("editAccount.html", accountInfo=accountInfo, loggedIn=loggedIn,first_name=first_name, itemNo=itemNo)
 
 
-@app.route("/account/profile/updatePassword", methods=["GET", "POST"])
+@app.route("/account/updatePassword", methods=["GET", "POST"])
 def changePassword():
     if 'EmailID' not in session:
         return redirect(url_for('login'))
