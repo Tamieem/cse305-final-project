@@ -26,7 +26,7 @@
 	{% endif %}
 	<div id="Cart">
 		<a class="link" href="/ShoppingCart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
+			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
 			CART {{noOfItems}}
 		</a>
 	</div>
@@ -35,11 +35,11 @@
 <div class="display">
 	<h2>Edit profile</h2>
 	<form action="/updateAccount" method="POST">
-		<p>Email:<input type="email" name="EmailID" value={{profileData[1]}} readonly="readonly"></p>
-		<p>First Name:<input type="text" name="FirstName" value={{profileData[2]}}></p>
-		<p>Last Name: <input type="text" name="LastName" value={{profileData[3]}}></p>
-		<p>Address: <input type="text" name="Address" value={{profileData[4]}}></p>
-		<p>Phone Number: <input type="text" name="PhoneNumber" value={{profileData[10]}}></p>
+		<p>Email:<input type="email" name="EmailID" value={{accountInfo[0]}} readonly="readonly"></p>
+		<p>First Name:<input type="text" name="FirstName" value={{accountInfo[1]}}></p>
+		<p>Last Name: <input type="text" name="LastName" value={{accountInfo[2]}}></p>
+		<p>Address: <input type="text" name="Address" value={{accountInfo[3]}}></p>
+		<p>Phone Number: <input type="text" name="PhoneNumber" value={{accountInfo[4]}}></p>
 		<input type="submit" value="Save">
 	</form>
 </div>
