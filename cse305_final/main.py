@@ -383,7 +383,7 @@ def checkout():
             output= "Could not place order"
     edb.close()
     print(output)
-    return render_template("checkout.html", orderId=orderID, now=now, name=FirstName, address=address)
+    return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address)
 
 @app.route("/logout")
 def logout():
