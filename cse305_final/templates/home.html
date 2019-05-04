@@ -39,12 +39,16 @@
 				<table>
 					<tr id="Name">
 						<td>
-							{{data[0]}}
+							Name: {{data[0][0]}}<br>
+							Price: ${{data[0][3]}}0<br>
+							Type: {{data[0][2]}}<br>
+							SellerID: {{data[0][4]}}<br>
 						</td>
 				</tr>
 				<tr id="Image">
 					<td>
 						<a href="/itemInfo?ArticleID={{data[1]}}">
+							View Item
 						</a>
 					</td>
 				</tr>
