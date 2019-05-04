@@ -113,11 +113,6 @@ connection.execute('''CREATE TABLE Orders (
 
 ''')
 
-connection.execute('''INSERT INTO Orders VALUES(000001, 802, '2019-04-14');
-''')
-connection.execute('''INSERT INTO Orders VALUES(000002, 802, '2019-04-14');
-''')
-
 connection.execute('''CREATE TABLE Reviews (
   ArticleID INT,
   SellerID INT,
