@@ -36,21 +36,21 @@ connection.execute('''INSERT INTO Item VALUES ("White Bed", 782152, "Furniture",
 ''')
 connection.execute('''INSERT INTO Item VALUES ("Persian Rug", 786333, "Furniture", 75.00, 326421, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Avengers Blueray Movie", 996511, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Avengers Blu-ray Movie", 996511, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Lord of the Rings Blueray Movie", 996512, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Lord of the Rings Blu-ray Movie", 996512, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Star Wars Blueray Movie", 996513, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Star Wars Blu-ray Movie", 996513, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Lion King Blueray Movie", 996514, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Lion King Blu-ray Movie", 996514, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Frozen Blueray Movie", 996515, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Frozen Blu-ray Movie", 996515, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Get Out Blueray Movie", 996516, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Get Out Blu-ray Movie", 996516, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Aquaman Blueray Movie", 996517, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("Aquaman Blu-ray Movie", 996517, "Entertainment", 25.00, 778966, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("The Dark Knight Blueray Movie", 996518, "Entertainment", 25.00, 778966, "");
+connection.execute('''INSERT INTO Item VALUES ("The Dark Knight Blu-ray Movie", 996518, "Entertainment", 25.00, 778966, "");
 ''')
 
 
@@ -98,10 +98,6 @@ connection.execute('''CREATE TABLE Shipment(
 
 ''')
 
-connection.execute('''INSERT INTO Shipment VALUES(654255, "Expedited", "123 Main Str", 11.99, "Please knock before dropping off shipment.", 0001);
-''')
-connection.execute('''INSERT INTO Shipment VALUES(654256, "Regular", "123 Main Str", 6.99, "Please knock before dropping off shipment.", 0002);
-''')
 
 connection.execute('''CREATE TABLE Orders (
   CustomerID INT,
@@ -113,17 +109,12 @@ connection.execute('''CREATE TABLE Orders (
 
 ''')
 
-connection.execute('''INSERT INTO Orders VALUES(000001, 802, '2019-04-14');
-''')
-connection.execute('''INSERT INTO Orders VALUES(000002, 802, '2019-04-14');
-''')
-
 connection.execute('''CREATE TABLE Reviews (
   ArticleID INT,
   SellerID INT,
   CustomerID INT,
   Ratings INT,
-  DetailedReview VARCHAR(100),
+  DetailedReview TEXT,
   PRIMARY KEY (ArticleID, SellerID, CustomerID),
   FOREIGN KEY (CustomerID)
     REFERENCES Customer(CustomerID),
@@ -200,21 +191,21 @@ connection.execute('''INSERT INTO Inventory VALUES(782152, 'White Bed', 100, 250
 ''')
 connection.execute('''INSERT INTO Inventory VALUES(786333, 'Persian Rug', 100, 75.00, 326421);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996511, 'Avengers Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996511, 'Avengers Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996512, 'Lord of the Rings Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996512, 'Lord of the Rings Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996513, 'Star Wars Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996513, 'Star Wars Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996514, 'Lion King Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996514, 'Lion King Blu-ay Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996515, 'Frozen Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996515, 'Frozen Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996516, 'Get Out Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996516, 'Get Out Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996517, 'Aquaman Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996517, 'Aquaman Blu-ray Movie', 100, 25.00, 778966);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(996518, 'The Dark Knight Blueray Movie', 100, 25.00, 778966);
+connection.execute('''INSERT INTO Inventory VALUES(996518, 'The Dark Knight Blu-ray Movie', 100, 25.00, 778966);
 ''')
 
 connection.execute('''CREATE TABLE _adds_item_to_cart_ (
