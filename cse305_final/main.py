@@ -145,15 +145,15 @@ def deleteItem():
     return redirect(url_for('home'))
 
 
-@app.route("/account/profile")
-def viewProfile():
-    if 'EmailID' not in session:
-        return redirect(url_for('home'))
-    loggedIn, first_name, itemNo = getAccountDetails()
-    return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
+# @app.route("/account/profile")
+# def viewProfile():
+#     if 'EmailID' not in session:
+#         return redirect(url_for('home'))
+#     loggedIn, first_name, itemNo = getAccountDetails()
+#     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
 
 
-@app.route("/account/profile/edit")
+@app.route("/account/edit")
 def editAccount():
     if 'EmailID' not in session:
         return redirect(url_for('home'))
