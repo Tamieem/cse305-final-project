@@ -245,7 +245,7 @@ def login():
 
 @app.route("/itemInfo")
 def itemInfo():
-    loggedIn, firstName, itenmNo = getAccountDetails()
+    loggedIn, firstName, itemNo = getAccountDetails()
     ItemID = request.args.get('ArticleID')
     with sqlite3.connect('ecommerce.db') as edb:
         cur = edb.cursor()
@@ -314,7 +314,7 @@ def addToCart():
             cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
             customer = cur.fetchone()
             try:
-                cur.execute("INSERT INTO _adds_item_to_cart(ArticleID, CustomerID) VALUES (?, ?)", (ArticleID, customer))
+                cur.execute("INSERT INTO ShoppingCart(ArticleID, CustomerID) VALUES (?, ?)", (ArticleID, customer))
                 edb.commit()
                 output = "Added Succesfully"
             except:
