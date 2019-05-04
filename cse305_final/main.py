@@ -296,7 +296,7 @@ def ShoppingCart():
     totalPrice = 0
     for item in items:
         totalPrice += item[2]
-    return render_template("cart.html", items=items, totalPrice=totalPrice, loggedIn=loggedIn, firstName=FirstName, itemNo=ItemNo)
+    return render_template("ShoppingCart.html", items=items, totalPrice=totalPrice, loggedIn=loggedIn, firstName=FirstName, itemNo=ItemNo)
 
 
 @app.route("/addToCart")
