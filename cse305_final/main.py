@@ -78,7 +78,7 @@ def home():
         cur.execute('SELECT Name, ArticleID, ItemType, Price, SellerID FROM Item ')
         itemInfo = cur.fetchall()
     itemInfo = parse(itemInfo)
-    return render_template('home.html', itemInfo=itemInfo, loggedIn=loggedIn, itemNo=itemNo)
+    return render_template('home.html', itemInfo=itemInfo, loggedIn=loggedIn, FirstName=first_name, itemNo=itemNo)
 
 
 @app.route("/add")
@@ -358,7 +358,7 @@ def checkout():
         return redirect(url_for('verifyLogin'))
     loggedIn, FirstName, ItemNo = getAccountDetails()
     EmailID = session['EmailID']
-    orderID = random.randint(1,10000001)
+    orderID = random.randint(1,1000000001)
     now = datetime.datetime.now()
     with sqlite3.connect('ecommerce.db') as edb:
         cur = edb.cursor()
@@ -375,12 +375,12 @@ def checkout():
             string += item[1] + " "
         try:
             cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
-            cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = customer")
+            cur.execute("DELETE * FROM ShoppingCart WHERE CustomerID = customer")
             edb.commit()
             output = "Order successfully placed"
         except:
             edb.rollback()
-            output= "Could not place order"
+            output="Could not place order"
     edb.close()
     print(output)
     return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address)
