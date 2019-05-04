@@ -12,14 +12,47 @@ connection.execute('''CREATE TABLE Item (
   PRIMARY KEY (ArticleID))
 ''')
 
-connection.execute('''INSERT INTO Item VALUES ("Laptop", 0001, "Electronic", 800.00, 0001, "");
+connection.execute('''INSERT INTO Item VALUES ("Dell Laptop", 354134, "Electronic", 800.00, 789853, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Balloon", 0002, "Misc", 2.00, 0003, "");
+connection.execute('''INSERT INTO Item VALUES ("Red Balloon", 135413, "Misc", 2.00, 783123, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("IPhone X", 0003, "Electronic", 799.00, 0001, "");
+connection.execute('''INSERT INTO Item VALUES ("IPhone X", 316895, "Electronic", 799.00, 789853, "");
 ''')
-connection.execute('''INSERT INTO Item VALUES ("Television", 0004, "Electronic", 300.00, 0005, "");
+connection.execute('''INSERT INTO Item VALUES ("LG Television", 486135, "Electronic", 300.00, 789853, "");
 ''')
+connection.execute('''INSERT INTO Item VALUES ("Gucci Shirt", 987312, "Clothing", 500.00, 619619, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Amiri Jeans", 453135, "Clothing", 1000.00, 619619, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Burberry Headband", 786652, "Clothing", 200.00, 619619, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Samsung Television", 456321, "Electronic", 400.00, 789853, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Brown Chair", 789543, "Furniture", 40.00, 326421, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Black Table", 643192, "Furniture", 45.00, 326421, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("White Bed", 782152, "Furniture", 250.00, 326421, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Persian Rug", 786333, "Furniture", 75.00, 326421, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Avengers Blueray Movie", 996511, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Lord of the Rings Blueray Movie", 996512, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Star Wars Blueray Movie", 996513, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Lion King Blueray Movie", 996514, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Frozen Blueray Movie", 996515, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Get Out Blueray Movie", 996516, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Aquaman Blueray Movie", 996517, "Entertainment", 25.00, 778966, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("The Dark Knight Blueray Movie", 996518, "Entertainment", 25.00, 778966, "");
+''')
+
 
 connection.execute('''CREATE TABLE Customer (
   CustomerID INT,
@@ -32,11 +65,11 @@ connection.execute('''CREATE TABLE Customer (
   PRIMARY KEY (CustomerID));
 ''')
 
-connection.execute('''INSERT INTO Customer VALUES (0001, 3476586391, "Mo", "Jahan", "mohammed.jahan@stonybrook.edu", "123", "123 Main St");
+connection.execute('''INSERT INTO Customer VALUES (987542, 3476586391, "Mo", "Jahan", "mohammed.jahan@stonybrook.edu", "123", "123 Main St");
 ''')
-connection.execute('''INSERT INTO Customer VALUES (0002, 1234567890, "Tamieem", "Jaffary", "tamieem.jaffary@stonybrook.edu" , "123", "456 Stony Book");
+connection.execute('''INSERT INTO Customer VALUES (987543, 1234567890, "Tamieem", "Jaffary", "tamieem.jaffary@stonybrook.edu" , "123", "456 Stony Book");
 ''')
-connection.execute('''INSERT INTO Customer VALUES (0003, 0987654321, "Rahim", "Ahamed", "rahim.ahamed@stonybrook.edu", "123", "789 New York");
+connection.execute('''INSERT INTO Customer VALUES (987544, 0987654321, "Rahim", "Ahamed", "rahim.ahamed@stonybrook.edu", "123", "789 New York");
 ''')
 
 connection.execute('''CREATE TABLE Payment (
@@ -47,11 +80,11 @@ connection.execute('''CREATE TABLE Payment (
   PRIMARY KEY (CustomerID, CardNumber));
 ''')
 
-connection.execute('''INSERT INTO Payment VALUES(0001, "Credit Card", 1234567890, '2019-11-11');
+connection.execute('''INSERT INTO Payment VALUES(987542, "Credit Card", 1234567890, '2019-11-11');
 ''')
-connection.execute('''INSERT INTO Payment VALUES(0002, "VISA", 4567890, '2020-12-12');
+connection.execute('''INSERT INTO Payment VALUES(987543, "VISA", 4567890, '2020-12-12');
 ''')
-connection.execute('''INSERT INTO Payment VALUES(0003, "Debit Card", 1237890, '2021-1-11');
+connection.execute('''INSERT INTO Payment VALUES(987544, "Debit Card", 1237890, '2021-1-11');
 ''')
 
 connection.execute('''CREATE TABLE Shipment(
@@ -65,9 +98,9 @@ connection.execute('''CREATE TABLE Shipment(
 
 ''')
 
-connection.execute('''INSERT INTO Shipment VALUES(0001, "Expedited", "123 Main Str", 11.99, "Please knock before dropping off shipment.", 0001);
+connection.execute('''INSERT INTO Shipment VALUES(654255, "Expedited", "123 Main Str", 11.99, "Please knock before dropping off shipment.", 0001);
 ''')
-connection.execute('''INSERT INTO Shipment VALUES(0002, "Regular", "123 Main Str", 6.99, "Please knock before dropping off shipment.", 0002);
+connection.execute('''INSERT INTO Shipment VALUES(654256, "Regular", "123 Main Str", 6.99, "Please knock before dropping off shipment.", 0002);
 ''')
 
 connection.execute('''CREATE TABLE Orders (
@@ -80,9 +113,9 @@ connection.execute('''CREATE TABLE Orders (
 
 ''')
 
-connection.execute('''INSERT INTO Orders VALUES(0001, 802, '2019-04-14');
+connection.execute('''INSERT INTO Orders VALUES(000001, 802, '2019-04-14');
 ''')
-connection.execute('''INSERT INTO Orders VALUES(0002, 802, '2019-04-14');
+connection.execute('''INSERT INTO Orders VALUES(000002, 802, '2019-04-14');
 ''')
 
 connection.execute('''CREATE TABLE Reviews (
@@ -100,9 +133,9 @@ connection.execute('''CREATE TABLE Reviews (
     REFERENCES Item(SellerID));
 ''')
 
-connection.execute('''INSERT INTO Reviews VALUES(0001, 0001, 0003, 3, 'Faulty keyboard');
+connection.execute('''INSERT INTO Reviews VALUES(354134, 789853, 987544, 3, 'Faulty keyboard');
 ''')
-connection.execute('''INSERT INTO Reviews VALUES(0002, 0003, 0002, 5, 'No issues');
+connection.execute('''INSERT INTO Reviews VALUES(135413, 783123, 987543, 5, 'No issues');
 ''')
 
 connection.execute('''CREATE TABLE Employee(
@@ -143,9 +176,45 @@ connection.execute('''CREATE TABLE Inventory(
   PRIMARY KEY (ItemID));
 ''')
 
-connection.execute('''INSERT INTO Inventory VALUES(0001, 'Laptop', 30, 800, 0001);
+connection.execute('''INSERT INTO Inventory VALUES(354134, 'Dell Laptop', 30, 800.00, 789853);
 ''')
-connection.execute('''INSERT INTO Inventory VALUES(0002, 'Balloon', 100, 2, 0001);
+connection.execute('''INSERT INTO Inventory VALUES(135413, 'Red Balloon', 100, 2.00, 783123);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(316895, 'IPhone X', 100, 799.00, 789853);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(486135, 'LG Television', 100, 300.00, 789853);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(987312, 'Gucci Shirt', 100, 500.00, 619619);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(453135, 'Amiri Jeans', 100, 1000.00, 619619);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(786652, 'Burberry Headband', 100, 200.00, 619619);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(456321, 'Samsung Television', 100, 400.00, 789853);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(789543, 'Brown Chair', 100, 40.00, 326421);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(643192, 'Black Table', 100, 45.00, 326421);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(782152, 'White Bed', 100, 250.00, 326421);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(786333, 'Persian Rug', 100, 75.00, 326421);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996511, 'Avengers Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996512, 'Lord of the Rings Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996513, 'Star Wars Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996514, 'Lion King Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996515, 'Frozen Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996516, 'Get Out Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996517, 'Aquaman Blueray Movie', 100, 25.00, 778966);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(996518, 'The Dark Knight Blueray Movie', 100, 25.00, 778966);
 ''')
 
 connection.execute('''CREATE TABLE _adds_item_to_cart_ (
