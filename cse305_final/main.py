@@ -388,7 +388,7 @@ def checkout():
         print(output)
         return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice)
     else:
-        return redirect(url_for('/ShoppingCart'))
+        return redirect(url_for('ShoppingCart'))
 
 
 @app.route("/logout")
