@@ -10,10 +10,6 @@
 	<a href="/">
 		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
 	</a>
-	<form>
-		<input id="searchBox" type="text" name="searchQuery">
-		<input id="searchButton" type="submit" value="Search">
-	</form>
 
 	{% if not loggedIn %}
 	<div id="signInButton">
@@ -32,17 +28,14 @@
 	{% endif %}
 	<div id="kart">
 		<a class="link" href="/cart">
-			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
-			CART {{itemNo}}
+			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
+			CART {{noOfItems}}
 		</a>
 	</div>
 </div>
 <div id="display">
 	<div id="productName">
 		<h1>{{itemInfo[1]}}</h1>
-	</div>
-	<div>
-		<img src={{url_for('static', filename='uploads/'+itemInfo[4]) }} id="productImage"/>
 	</div>
 
 	<div id="productDescription">
@@ -54,15 +47,15 @@
 			</tr>
 			<tr>
 				<td>Price</td>
-				<td>${{itemInfo[2]}}</td>
+				<td>${{itemInfo[2]}}0</td>
 			</tr>
 			<tr>
-				<td>Stock</td>
-				<td>{{itemInfo[5]}}</td>
+				<td>Type</td>
+				<td>{{itemInfo[3]}}</td>
 			</tr>
 		</table>
-		<h2>Description</h2>
-		<p>{{itemInfo[3]}}</p>
+		<h2>Reviews</h2>
+		<p>There are currently no reviews.</p>
 	</div>
 	<div id="addToCart">
 		<a href="/addToCart?productId={{request.args.get('productId')}}">Add to Cart</a>
