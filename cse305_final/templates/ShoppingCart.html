@@ -37,25 +37,25 @@
 <div id="cartItems">
 	<h2>Shopping Cart</h2>
 	<div id="tableItems">
-		{% for row in products %}
+		{% for row in items %}
 		<div>
 			<hr id="seperator">
 			<div id="itemImage">
-				<img src={{url_for('static', filename='uploads/'+row[3])}} id="image"/>
+				Item:
 			</div>
 			<div id="itemName">
-				<span id="itemNameTag">{{row[1]}}</span><br>
-				In stock<br>
+				<span id="itemNameTag">{{row[1]}}
+					<br>Serial Number #{{row[0]}}</span><br>
 				<a href="/removeFromCart?productId={{row[0]}}">Remove</a>
 			</div>
 			<div id="itemPrice">
-				${{row[2]}}
+				${{row[2]}}0
 			</div>
 		</div>
 		{% endfor %}
 		<hr id="seperator">
 		<div id="total">
-			<span id="subtotal">Subtotal</span> : ${{totalPrice}}
+			<span id="subtotal">Subtotal</span> : ${{totalPrice}}0
 		</div>
 	</div>
 </div>
