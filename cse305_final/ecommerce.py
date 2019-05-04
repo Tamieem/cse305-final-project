@@ -12,6 +12,15 @@ connection.execute('''CREATE TABLE Item (
   PRIMARY KEY (ArticleID))
 ''')
 
+connection.execute('''INSERT INTO Item VALUES ("Laptop", 0001, "Electronic", 800.00, 0001, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Balloon", 0002, "Misc", 2.00, 0003, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("IPhone X", 0003, "Electronic", 799.00, 0001, "");
+''')
+connection.execute('''INSERT INTO Item VALUES ("Television", 0004, "Electronic", 300.00, 0005, "");
+''')
+
 connection.execute('''CREATE TABLE Customer (
   CustomerID INT,
   PhoneNumber VARCHAR(45),
@@ -31,6 +40,13 @@ connection.execute('''CREATE TABLE Payment (
   PRIMARY KEY (OrderID, CardNumber));
 ''')
 
+connection.execute('''INSERT INTO Payment VALUES(0001, "Credit Card", 1234567890, '2019-11-11');
+''')
+connection.execute('''INSERT INTO Payment VALUES(0002, "VISA", 4567890, '2020-12-12');
+''')
+connection.execute('''INSERT INTO Payment VALUES(0003, "Debit Card", 1237890, '2021-1-11');
+''')
+
 connection.execute('''CREATE TABLE Shipment(
   ShipmentID INT  ,
   ShipmentType VARCHAR(45),
@@ -42,12 +58,22 @@ connection.execute('''CREATE TABLE Shipment(
 
 ''')
 
+connection.execute('''INSERT INTO Shipment VALUES(0001, "Expedited", "123 Main Str", 11.99, "Please knock before dropping off shipment.", 0001);
+''')
+connection.execute('''INSERT INTO Shipment VALUES(0002, "Regular", "123 Main Str", 6.99, "Please knock before dropping off shipment.", 0002);
+''')
+
 connection.execute('''CREATE TABLE Orders (
   OrderID INT  ,
   TotalPrice DOUBLE NULL,
   PlacedOn DATE NULL,
   PRIMARY KEY (OrderID));
 
+''')
+
+connection.execute('''INSERT INTO Orders VALUES(0001, 802, '2019-04-14');
+''')
+connection.execute('''INSERT INTO Orders VALUES(0002, 802, '2019-04-14');
 ''')
 
 connection.execute('''CREATE TABLE Reviews (
@@ -65,12 +91,22 @@ connection.execute('''CREATE TABLE Reviews (
     REFERENCES Item(SellerID));
 ''')
 
+connection.execute('''INSERT INTO Reviews VALUES(0001, 0001, 0003, 3, 'Faulty keyboard');
+''')
+connection.execute('''INSERT INTO Reviews VALUES(0002, 0003, 0002, 5, 'No issues');
+''')
+
 connection.execute('''CREATE TABLE Employee(
   EmployeeID INT,
   Role VARCHAR(45) ,
   DateJoined DATE,
   SupervisorID INT,
   PRIMARY KEY (EmployeeID));
+''')
+
+connection.execute('''INSERT INTO Employee VALUES(0002, 'Supervisor', '2010-12-25', NULL);
+''')
+connection.execute('''INSERT INTO Employee VALUES(0001, 'Employee', '2012-03-09', 0002);
 ''')
 
 connection.execute('''CREATE TABLE ShoppingCart(
@@ -88,6 +124,11 @@ connection.execute('''CREATE TABLE ShoppingCart(
     REFERENCES Item(ArticleID));
 ''')
 
+connection.execute('''INSERT INTO ShoppingCart VALUES(0001, 802, '800 2', '1 1', '0001 0002');
+''')
+connection.execute('''INSERT INTO ShoppingCart VALUES(0002, 1642, '800 2', '2 21', '0001 0002');
+''')
+
 connection.execute('''CREATE TABLE Inventory(
   ItemID INT,
   ItemName VARCHAR(45),
@@ -95,6 +136,11 @@ connection.execute('''CREATE TABLE Inventory(
   Price DOUBLE,
   SellerID INT ,
   PRIMARY KEY (ItemID));
+''')
+
+connection.execute('''INSERT INTO Inventory VALUES(0001, 'Laptop', 30, 800, 0001);
+''')
+connection.execute('''INSERT INTO Inventory VALUES(0002, 'Balloon', 100, 2, 0001);
 ''')
 
 connection.execute('''CREATE TABLE _adds_item_to_cart_ (
@@ -114,6 +160,11 @@ connection.execute('''CREATE TABLE _adds_item_to_cart_ (
     REFERENCES Item(SellerID));
 ''')
 
+connection.execute('''INSERT INTO _adds_item_to_cart_ VALUES(2, 0001, 0001, 0001, 0001);
+''')
+connection.execute('''INSERT INTO _adds_item_to_cart_ VALUES(2, 0002, 0002, 0002, 0002);
+''')
+
 connection.execute('''CREATE TABLE _has_ (
   ArticleID INT ,
   SellerID INT,
@@ -127,6 +178,11 @@ connection.execute('''CREATE TABLE _has_ (
     REFERENCES Customer(CustomerID));
 ''')
 
+connection.execute('''INSERT INTO _has_ VALUES(0001, 0001, 0001);
+''')
+connection.execute('''INSERT INTO _has_ VALUES(0002, 0002, 0002);
+''')
+
 connection.execute('''CREATE TABLE  _contains_(
   ArticleID INT,
   ShoppingCartID INT,
@@ -135,6 +191,11 @@ connection.execute('''CREATE TABLE  _contains_(
     REFERENCES Item(ArticleID),
   FOREIGN KEY (ShoppingCartID)
     REFERENCES ShoppingCart(ShoppingCartID));
+''')
+
+connection.execute('''INSERT INTO _contains_ VALUES(0001, 0001);
+''')
+connection.execute('''INSERT INTO _contains_ VALUES(0002, 0002);
 ''')
 
 connection.execute('''CREATE TABLE _maintains_(
@@ -147,6 +208,11 @@ connection.execute('''CREATE TABLE _maintains_(
     REFERENCES Inventory(ItemID));
 ''')
 
+connection.execute('''INSERT INTO _maintains_ VALUES(0001, 0001);
+''')
+connection.execute('''INSERT INTO _maintains_ VALUES(0002, 0002);
+''')
+
 connection.execute('''CREATE TABLE _creates_ (
   CustomerID INT,
   OrderID INT,
@@ -155,6 +221,11 @@ connection.execute('''CREATE TABLE _creates_ (
     REFERENCES Customer (CustomerID),
   FOREIGN KEY (OrderID)
     REFERENCES Orders (OrderID));
+''')
+
+connection.execute('''INSERT INTO _creates_ VALUES(0001, 0001);
+''')
+connection.execute('''INSERT INTO _creates_ VALUES(0002, 0002);
 ''')
 
 connection.execute('''CREATE TABLE _payed_by_ (
@@ -171,6 +242,11 @@ connection.execute('''CREATE TABLE _payed_by_ (
    );
 ''')
 
+connection.execute('''INSERT INTO _payed_by_ VALUES(0001, 1234567890, 0001);
+''')
+connection.execute('''INSERT INTO _payed_by_ VALUES(0002, 4567890, 0002);
+''')
+
 connection.execute('''CREATE TABLE _shipped_ (
   ShipmentID INT ,
   OrderID INT,
@@ -182,6 +258,11 @@ connection.execute('''CREATE TABLE _shipped_ (
    );
 ''')
 
+connection.execute('''INSERT INTO _shipped_ VALUES(0001, 0001);
+''')
+connection.execute('''INSERT INTO _shipped_ VALUES(0002, 0002);
+''')
+
 connection.execute('''CREATE TABLE _carries_ (
   OrderID INT,
   ShoppingCartID INT,
@@ -191,6 +272,11 @@ connection.execute('''CREATE TABLE _carries_ (
   FOREIGN KEY (ShoppingCartID)
     REFERENCES ShoppingCart (ShoppingCartID)
    );
+''')
+
+connection.execute('''INSERT INTO _carries_ VALUES(0001, 0001);
+''')
+connection.execute('''INSERT INTO _carries_ VALUES(0002, 0002);
 ''')
 
 connection.execute('''CREATE TABLE _verifies_ (
@@ -207,14 +293,12 @@ connection.execute('''CREATE TABLE _verifies_ (
    );
 ''')
 
+connection.execute('''INSERT INTO _verifies_ VALUES(0001, 1234567890, 0001);
+''')
+connection.execute('''INSERT INTO _verifies_ VALUES(0002, 4567890, 0002);
+''')
+
 crsr = connection.cursor()
-
-crsr.execute("SELECT * FROM Item")
-
-ans = crsr.fetchall()
-
-for i in ans:
-    print(i)
 
 connection.commit()
 
