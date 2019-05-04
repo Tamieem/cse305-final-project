@@ -252,10 +252,10 @@ def itemInfo():
         cur = edb.cursor()
         cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
         itemInfo = cur.fetchone()
-        cur.execute('SELECT DetailedReview, Ratings, CustomerID FROM Reviews WHERE ArticleID = ?', (ItemID))
-        reviewData = cur.fetchone()
+    #    cur.execute('SELECT DetailedReview, Ratings, CustomerID FROM Reviews WHERE ArticleID = ?', (ItemID))
+      #  reviewData = cur.fetchone()
     edb.close()
-    return render_template("itemInfo.html", itemInfo=itemInfo, reviews=reviewData, loggedIn=loggedIn, firstName=firstName, itemNo=itemNo)
+    return render_template("itemInfo.html", itemInfo=itemInfo, loggedIn=loggedIn, firstName=firstName, itemNo=itemNo)
 
 
 @app.route("/createReview", methods=['GET', 'POST'])
