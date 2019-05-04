@@ -40,11 +40,11 @@ connection.execute('''INSERT INTO Customer VALUES (0003, 0987654321, "Rahim", "A
 ''')
 
 connection.execute('''CREATE TABLE Payment (
-  OrderID INT  ,
+  CustomerID INT  ,
   PaymentType VARCHAR(45),
   CardNumber INT  ,
   CardExpirationDate DATE,
-  PRIMARY KEY (OrderID, CardNumber));
+  PRIMARY KEY (CustomerID, CardNumber));
 ''')
 
 connection.execute('''INSERT INTO Payment VALUES(0001, "Credit Card", 1234567890, '2019-11-11');

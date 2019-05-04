@@ -145,15 +145,15 @@ def deleteItem():
     return redirect(url_for('home'))
 
 
-@app.route("/account/profile")
-def viewProfile():
-    if 'EmailID' not in session:
-        return redirect(url_for('home'))
-    loggedIn, first_name, itemNo = getAccountDetails()
-    return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
+# @app.route("/account/profile")
+# def viewProfile():
+#     if 'EmailID' not in session:
+#         return redirect(url_for('home'))
+#     loggedIn, first_name, itemNo = getAccountDetails()
+#     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
 
 
-@app.route("/account/profile/edit")
+@app.route("/account/edit")
 def editAccount():
     if 'EmailID' not in session:
         return redirect(url_for('home'))
@@ -166,7 +166,7 @@ def editAccount():
     return render_template("editAccount.html", accountInfo=accountInfo, loggedIn=loggedIn,first_name=first_name, itemNo=itemNo)
 
 
-@app.route("/account/profile/updatePassword", methods=["GET", "POST"])
+@app.route("/account/updatePassword", methods=["GET", "POST"])
 def changePassword():
     if 'EmailID' not in session:
         return redirect(url_for('login'))
@@ -359,10 +359,14 @@ def register():
         last = request.form['LastName']
         number = request.form['PhoneNumber']
         address = request.form['Address']
+        card = request.form['paymentInfo']
+        expDate = request.form['expirationDate']
         with sqlite3.connect('ecommerce.db') as edb:
             try:
                 cur = edb.cursor()
                 cur.execute("INSERT INTO Customer(CustomerID,PhoneNumber, FirstName, LastName, EmailID, Password, Address) VALUES (?, ?, ?, ?, ?, ?, ?)", (id, number, first, last, email, pw, address))
+                edb.commit()
+                cur.execute("INSERT INTO Payment(CustomerID, PaymentType, CardNumber, CardExpirationDate) VALUES (?, ?, ?, ?)", (id, "Credit Card", card, expDate))
                 edb.commit()
                 output = "Enjoy you experience!"
             except:
