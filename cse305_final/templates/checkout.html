@@ -10,27 +10,6 @@
 	<a href="/">
 		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
 	</a>
-
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/verifylogin">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{firstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
-	<div id="cart">
-		<a class="link" href="/ShoppingCart">
-			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
-			CART {{itemNo}}
-		</a>
-	</div>
 </div>
 <div class="display">
 	<div>
@@ -39,8 +18,10 @@
 			{{name}}<br>
         	{{address}}<br>
 			Order placed: {{now}}</h4>
-
+		<a href="/">Return to HomePage</a>
     </div>
+
+
 </div>
 </body>
 </html>
