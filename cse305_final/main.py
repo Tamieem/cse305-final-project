@@ -164,7 +164,7 @@ def editAccount():
     loggedIn, first_name, itemNo = getAccountDetails()
     with sqlite3.connect('ecommerce.db') as edb:
         cur = edb.cursor()
-        cur.execute("SELECT EmailID, FirstName, LastName, Address, PhoneNUmber FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
+        cur.execute("SELECT EmailID, FirstName, LastName, Address, PhoneNumber FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
         accountInfo = cur.fetchone()
     edb.close()
     return render_template("editAccount.html", accountInfo=accountInfo, loggedIn=loggedIn,first_name=first_name, itemNo=itemNo)
