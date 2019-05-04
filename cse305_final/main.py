@@ -373,7 +373,9 @@ def checkout():
         for item in items:
             totalPrice += item[2]
             string += item[1] + " "
-        if totalPrice != 0:
+    edb.close()
+    if totalPrice != 0:
+        with sqlite3.connect('ecommerce.db') as edb:
             try:
                 cur.execute("INSERT INTO Orders(CustomerID, OrderID, Items, TotalPrice, PlacedOn) VALUES (?, ?, ?, ?, ?)", (customer, orderID, string, totalPrice, now))
                 cur.execute("DELETE FROM ShoppingCart WHERE CustomerID = ?", (customer, ))
@@ -382,12 +384,11 @@ def checkout():
             except:
                 edb.rollback()
                 output = "Could not place order"
-            edb.close()
-            print(output)
-            return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice)
-        else:
-            edb.close()
-            return redirect(url_for('/ShoppingCart'))
+        edb.close()
+        print(output)
+        return render_template("checkout.html", orderID=orderID, now=now, name=FirstName, address=address, totalPrice=totalPrice)
+    else:
+        return redirect(url_for('/ShoppingCart'))
 
 
 @app.route("/logout")
