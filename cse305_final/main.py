@@ -145,12 +145,16 @@ def deleteItem():
     return redirect(url_for('home'))
 
 
-# @app.route("/account/profile")
-# def viewProfile():
-#     if 'EmailID' not in session:
-#         return redirect(url_for('home'))
-#     loggedIn, first_name, itemNo = getAccountDetails()
-#     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo)
+@app.route("/account/profile")
+def viewProfile():
+    if 'EmailID' not in session:
+        return redirect(url_for('home'))
+    loggedIn, first_name, itemNo = getAccountDetails()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        cur.execute("SELECT FirstName, LastName, Address, PhoneNumber FROM Customer WHERE Customer WHERE EmailID = ?", (session['EmailID'],))
+        accountInfo = cur.fetchone()
+    return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo, accountInfo=accountInfo)
 
 
 @app.route("/account/edit")
