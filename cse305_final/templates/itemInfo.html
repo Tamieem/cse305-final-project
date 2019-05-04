@@ -39,10 +39,7 @@
 </div>
 <div id="display">
 	<div id="productName">
-		<h1>{{data[1]}}</h1>
-	</div>
-	<div>
-		<img src={{url_for('static', filename='uploads/'+data[4]) }} id="productImage"/>
+		<h1>{{itemInfo[1]}}</h1>
 	</div>
 
 	<div id="productDescription">
@@ -50,19 +47,19 @@
 		<table id="descriptionTable">
 			<tr>
 				<td>Name</td>
-				<td>{{data[1]}}</td>
+				<td>{{itemInfo[1]}}</td>
 			</tr>
 			<tr>
 				<td>Price</td>
-				<td>${{data[2]}}</td>
+				<td>${{itemInfo[2]}}0</td>
 			</tr>
 			<tr>
-				<td>Stock</td>
-				<td>{{data[5]}}</td>
+				<td>Type</td>
+				<td>{{itemInfo[3]}}</td>
 			</tr>
 		</table>
-		<h2>Description</h2>
-		<p>{{data[3]}}</p>
+		<h2>Reviews</h2>
+		<p>There are currently no reviews.</p>
 	</div>
 	<div id="addToCart">
 		<a href="/addToCart?productId={{request.args.get('productId')}}">Add to Cart</a>
