@@ -14,25 +14,6 @@
 	width: 100%;
 }
 
-#searchBox {
-	height: 20px;
-	width: 800px;
-	margin-left: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	margin-right: 20px;
-	float: left;
-	font-size: 1.5em;
-}
-
-#searchButton {
-	height: 25px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	margin-right: 20px;
-	float: left;
-}
-
 .dropbtn {
 	background-color: black;
 	color: white;
