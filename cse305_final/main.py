@@ -189,30 +189,35 @@ def editAccount():
 
 @app.route("/account/updatePassword", methods=["GET", "POST"])
 def changePassword():
+    successful = 0
     if 'EmailID' not in session:
         return redirect(url_for('login'))
     info = "No changes"
     if request.method == "POST":
-        prevPass = request.form('prevPass')
-        newPass = request.form('newPass')
+        prevPass = request.form['prevPass']
+        newPass = request.form['newPass']
         with sqlite3.connect('ecommerce.db') as edb:
             cur = edb.cursor()
-            cur.execute("SELECT CustomerID, Password FROM Customer WHERE email = ?", (session['EmailID'], ))
+            cur.execute("SELECT CustomerID, Password FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
             CustomerID, Password = cur.fetchone()
             if Password == prevPass:
                 try:
                     cur.execute("UPDATE Customer SET Password = ? WHERE CustomerID = ?", (newPass, CustomerID))
                     edb.commit()
                     info = "Password Updated!"
+                    successful = 1
                 except:
                     edb.rollback()
                     info = "Password did not update"
-                edb.close() # JUST IN CASE
-                return render_template("updatePassword.html", info=info)
+                #edb.close() # JUST IN CASE
+                #return render_template("editAccount.html", info=info)
             else:
                 info = "Incorrect password"
         edb.close()
-        return render_template("updatePassword.html", info=info)
+        if successful == 1:
+            return render_template("profile.html", info=info)
+        else:
+            return render_template("updatePassword.html", info=info)
     else:
         return render_template("updatePassword.html", info=info)
 
