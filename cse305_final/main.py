@@ -156,7 +156,7 @@ def viewProfile():
         cur.execute("SELECT EmailID, FirstName, LastName, Address, PhoneNumber FROM Customer WHERE EmailID = ?", (session['EmailID'],))
         accountInfo = cur.fetchone()
     edb.close()
-    return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo, accountInfo=accountInfo)
+    return render_template("profile.html", loggedIn=loggedIn, firstName=first_name, itemNo=itemNo, accountInfo=accountInfo)
 
 
 @app.route("/account/orders")
