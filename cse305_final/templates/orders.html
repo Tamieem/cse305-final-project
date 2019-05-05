@@ -11,20 +11,6 @@
 		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
 	</a>
 
-	{% if not loggedIn %}
-	<div id="signInButton">
-		<a class="link" href="/verifylogin">Sign In</a>
-	</div>
-	{% else %}
-	<div class="dropdown">
-		<button class="dropbtn">Hello, <br>{{FirstName}}</button>
-		<div class="dropdown-content">
-			<a href="/account/profile">Your profile</a>
-			<hr>
-			<a href="/logout">Sign Out</a>
-		</div>
-	</div>
-	{% endif %}
 	<div id="cart">
 		<a class="link" href="/ShoppingCart">
 			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
@@ -38,9 +24,11 @@
 		{% for data in orders %}
             OrderID: {{data[0]}}<br>
 			Price: {{data[1]}}<br>
-            Date Ordered: {{data[2]}}<br>
-        {% endif %}
+            Date Ordered: {{data[3]}}<br>
+        {% endfor %}
 	</div>
+
+	<a href="/">Return to HomePage</a>
 </div>
 </body>
 </html>
