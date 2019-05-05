@@ -36,9 +36,9 @@
 	<div>
 		<h2>Orders</h2>
 		{% for data in orders %}
-            Item Names: {{data[1]}}<br>
             OrderID: {{data[0]}}<br>
-            Date Ordered: {{data[3]}}<br>
+			Price: {{data[1]}}<br>
+            Date Ordered: {{data[2]}}<br>
         {% endif %}
 	</div>
 </div>
