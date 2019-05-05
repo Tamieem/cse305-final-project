@@ -213,7 +213,7 @@ def changePassword():
         edb.close()
         return render_template("updatePassword.html", info=info)
     else:
-        return render_template("updatePassword")
+        return render_template("updatePassword.html", info=info)
 
 
 @app.route("/updateAccount", methods=["GET", "POST"])
