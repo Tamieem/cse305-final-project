@@ -103,8 +103,8 @@ connection.execute('''CREATE TABLE Orders (
   CustomerID INT,
   OrderID INT,
   Items TEXT,
-  TotalPrice DOUBLE NULL,
-  PlacedOn DATE NULL,
+  TotalPrice DOUBLE,
+  PlacedOn DATE,
   PRIMARY KEY (OrderID));
 
 ''')

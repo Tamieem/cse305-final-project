@@ -168,8 +168,8 @@ def viewOrders():
         cur = edb.cursor()
         cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
         customer = cur.fetchone()[0]
-        cur.execute("SELECT OrderID, Items, TotalPrice, PlacedOn FROM Orders WHERE CustomerID = ?" (customer, ))
-        orders = cur.fetchone()
+        cur.execute("SELECT OrderID, TotalPrice, PlacedOn FROM Orders WHERE CustomerID = ?", (customer, ))
+        orders = cur.fetchall()
     edb.close()
     return render_template("orders.html", orders=orders)
 
