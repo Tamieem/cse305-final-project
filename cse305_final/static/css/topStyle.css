@@ -1,6 +1,6 @@
 #logo {
 	height: 50px;
-	width: 200px;
+	width: 50x;
 	margin-left: 20px;
 	margin-top: 10px;
 	margin-bottom: 10px;
@@ -21,6 +21,7 @@
 	font-size: 15px;
 	border: none;
 	cursor: pointer;
+	float: right;
 }
 
 .dropdown {

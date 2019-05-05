@@ -4,12 +4,18 @@
 	<link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css') }} />
 </head>
 <body>
-<p> LOG IN </p>
+<div id="title">
+	<a href="/">
+		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
+	</a>
+</div>
+<h2>Log In</h2>
 <form action="/login" method="POST">
 	<p>Email: <input type="text" name="EmailID"></p>
 	<p>Password: <input type="password" name="Password"></p>
-	<p><input type="submit" name="Submit"></p>
-	<a href="/registration">Register here</a>
+	<p><input type="submit" name="Submit"></p><br>
+	Don't have an account? <a href="/registration">Register here</a><br>
+	or <a href="/">Return to Home</a>
 </form>
 
 </body>

@@ -1,11 +1,17 @@
 <html>
 <head>
 <title>Registration</title>
-<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
     <link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css') }} />
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/validateForm.js') }}">
 </script>
 </head>
 <body>
+<div id="title">
+	<a href="/">
+		<img id="logo" src= {{ url_for('static', filename='images/logo.png') }} />
+	</a>
+</div>
+<h2>Create an Account</h2>
 <form action="/register" method="POST" onsubmit="return validate()">
     <p>First Name: <input type="text" name="FirstName"></p>
     <p>Last Name: <input type="text" name="LastName"></p>
@@ -17,9 +23,10 @@
 
     <P>Credit Card: <input type="text" name="paymentInfo" id="paymentInfo" required></p>
     <P>Expiration Date (mm/yy): <input type="text" name="expirationDate" id="expirationDate" required></p>
-    <p><input type="submit" value="Register"></p>
+    <p><input type="submit" value="Register"></p><br>
 
-    <a href="/verifylogin">Login here</a>
+    Already have an account? <a href="/verifylogin">Login here</a><br> or
+    <a href="/">Cancel Registration</a>
 </form>
 </body>
 </html>
