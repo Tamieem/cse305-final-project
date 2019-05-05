@@ -155,7 +155,23 @@ def viewProfile():
         cur = edb.cursor()
         cur.execute("SELECT EmailID, FirstName, LastName, Address, PhoneNumber FROM Customer WHERE EmailID = ?", (session['EmailID'],))
         accountInfo = cur.fetchone()
+    edb.close()
     return render_template("profile.html", loggedIn=loggedIn, first_name=first_name, itemNo=itemNo, accountInfo=accountInfo)
+
+
+@app.route("/account/orders")
+def viewOrders():
+    if 'EmailID' not in session:
+        return redirect(url_for('verifyLogin'))
+    loggedIn, firstName, itemNo = getAccountDetails()
+    with sqlite3.connect('ecommerce.db') as edb:
+        cur = edb.cursor()
+        cur.execute("SELECT CustomerID FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
+        customer = cur.fetchone()[0]
+        cur.execute("SELECT OrderID, Items, TotalPrice, PlacedOn FROM Orders WHERE CustomerID = ?" (customer, ))
+        orders = cur.fetchone()
+    edb.close()
+    return render_template("orders.html", orders=orders)
 
 
 @app.route("/account/edit")
@@ -252,8 +268,6 @@ def itemInfo():
         cur = edb.cursor()
         cur.execute('SELECT ArticleID, Name, Price, ItemType, SellerID FROM Item WHERE ArticleID = ?', (ItemID, ))
         itemInfo = cur.fetchone()
-    #    cur.execute('SELECT DetailedReview, Ratings, CustomerID FROM Reviews WHERE ArticleID = ?', (ItemID))
-      #  reviewData = cur.fetchone()
     edb.close()
     return render_template("itemInfo.html", itemInfo=itemInfo, loggedIn=loggedIn, firstName=firstName, itemNo=itemNo)
 
@@ -349,7 +363,6 @@ def removeFromCart():
     edb.close()
     print(output)
     return redirect(url_for('home'))
-
 
 
 @app.route("/checkout")
