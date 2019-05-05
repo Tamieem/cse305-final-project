@@ -171,7 +171,7 @@ def viewOrders():
         cur.execute("SELECT OrderID, TotalPrice, PlacedOn FROM Orders WHERE CustomerID = ?", (customer, ))
         orders = cur.fetchall()
     edb.close()
-    return render_template("orders.html", orders=orders)
+    return render_template("orders.html", orders=orders, itemNo=itemNo)
 
 
 @app.route("/account/edit")
