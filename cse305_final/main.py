@@ -191,6 +191,7 @@ def editAccount():
 def changePassword():
     if 'EmailID' not in session:
         return redirect(url_for('login'))
+    info = "No changes"
     if request.method == "POST":
         prevPass = request.form('prevPass')
         newPass = request.form('newPass')
