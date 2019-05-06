@@ -193,11 +193,11 @@ def changePassword():
         return redirect(url_for('login'))
     info = "No changes"
     if request.method == "POST":
-        prevPass = request.form('prevPass')
-        newPass = request.form('newPass')
+        prevPass = request.form['prevPass']
+        newPass = request.form['newPass']
         with sqlite3.connect('ecommerce.db') as edb:
             cur = edb.cursor()
-            cur.execute("SELECT CustomerID, Password FROM Customer WHERE email = ?", (session['EmailID'], ))
+            cur.execute("SELECT CustomerID, Password FROM Customer WHERE EmailID = ?", (session['EmailID'], ))
             CustomerID, Password = cur.fetchone()
             if Password == prevPass:
                 try:
@@ -208,7 +208,7 @@ def changePassword():
                     edb.rollback()
                     info = "Password did not update"
                 edb.close() # JUST IN CASE
-                return render_template("updatePassword.html", info=info)
+                return redirect(url_for('viewProfile'))
             else:
                 info = "Incorrect password"
         edb.close()
