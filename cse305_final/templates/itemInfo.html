@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Product Description</title>
-<link rel="stylesheet" href={{url_for('static', filename='css/productDescription.css')}} />
+<link rel="stylesheet" href={{url_for('static', filename='css/itemDescription.css')}} />
 <link rel="stylesheet" href={{ url_for('static', filename='css/topStyle.css')}} />
 </head>
 <body>
@@ -13,7 +13,7 @@
 
 	{% if not loggedIn %}
 	<div id="signInButton">
-		<a class="link" href="/loginForm">Sign In</a>
+		<a class="link" href="/verifylogin">Sign In</a>
 	</div>
 	{% else %}
 	<div class="dropdown">
@@ -28,8 +28,8 @@
 	{% endif %}
 	<div id="kart">
 		<a class="link" href="/ShoppingCart">
-			<img src={{url_for('static', filename='images/shoppingCart.png')}} id="cartIcon" />
-			CART ({{noOfItems}})
+			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
+			CART ({{itemNo}})
 		</a>
 	</div>
 </div>

@@ -1,34 +1,15 @@
-#logo {
-	height: 40px;
-	width: 50px;
-	margin-left: 20px;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	margin-right: 20px;
-	float: left;
-}
-
 #title {
 	background-color: red;
 	display: inline-block;
 	width: 100%;
 }
 
-#searchBox {
-	height: 20px;
-	width: 800px;
+#logo {
+	height: 50px;
+	width: 50x;
 	margin-left: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	margin-right: 20px;
-	float: left;
-	font-size: 1.5em;
-}
-
-#searchButton {
-	height: 25px;
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 	margin-right: 20px;
 	float: left;
 }
@@ -37,14 +18,19 @@
 	background-color: black;
 	color: white;
 	padding: 16px;
+	margin-left: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right: 20px;
 	font-size: 15px;
 	border: none;
 	cursor: pointer;
+	float: right;
 }
 
 .dropdown {
 	position: relative;
-	float: left;
+	float: right;
 }
 
 .dropdown-content  {
@@ -79,7 +65,7 @@
 	margin-bottom: 20px;
 	margin-left: 20px;
 	margin-right: 20px;
-	float: left;
+	float: right;
 }
 #kart {
 	color: white;
@@ -91,7 +77,7 @@
 }
 
 #cartIcon {
-	height: 30px;
-	width: 30px;
+	height: 20px;
+	width: 20px;
 }
 

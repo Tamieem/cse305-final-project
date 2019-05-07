@@ -171,7 +171,7 @@ def viewOrders():
         cur.execute("SELECT OrderID, TotalPrice, PlacedOn FROM Orders WHERE CustomerID = ?", (customer, ))
         orders = cur.fetchall()
     edb.close()
-    return render_template("orders.html", orders=orders)
+    return render_template("orders.html", orders=orders, itemNo=itemNo)
 
 
 @app.route("/account/edit")
@@ -189,6 +189,7 @@ def editAccount():
 
 @app.route("/account/updatePassword", methods=["GET", "POST"])
 def changePassword():
+    successful = 0
     if 'EmailID' not in session:
         return redirect(url_for('login'))
     info = "No changes"
@@ -204,15 +205,19 @@ def changePassword():
                     cur.execute("UPDATE Customer SET Password = ? WHERE CustomerID = ?", (newPass, CustomerID))
                     edb.commit()
                     info = "Password Updated!"
+                    successful = 1
                 except:
                     edb.rollback()
                     info = "Password did not update"
-                edb.close() # JUST IN CASE
-                return redirect(url_for('viewProfile'))
+                #edb.close() # JUST IN CASE
+                #return render_template("editAccount.html", info=info)
             else:
                 info = "Incorrect password"
         edb.close()
-        return render_template("updatePassword.html", info=info)
+        if successful == 1:
+            return render_template("profile.html", info=info)
+        else:
+            return render_template("updatePassword.html", info=info)
     else:
         return render_template("updatePassword.html", info=info)
 

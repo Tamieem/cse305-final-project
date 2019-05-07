@@ -25,13 +25,13 @@
 			<a href="/logout">Sign Out</a>
 		</div>
 	</div>
-	{% endif %}
-	<div id="cart">
+	<div id="kart">
 		<a class="link" href="/ShoppingCart">
 			<img src={{url_for('static', filename='images/shoppingcart.jpg')}} id="cartIcon" />
-			CART {{itemNo}}
+			CART ({{itemNo}})
 		</a>
 	</div>
+	{% endif %}
 </div>
 <div class="display">
 	<div>
