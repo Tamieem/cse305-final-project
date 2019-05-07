@@ -1,3 +1,9 @@
+#title {
+	background-color: red;
+	display: inline-block;
+	width: 100%;
+}
+
 #logo {
 	height: 50px;
 	width: 50x;
@@ -6,12 +12,6 @@
 	margin-bottom: 10px;
 	margin-right: 20px;
 	float: left;
-}
-
-#title {
-	background-color: red;
-	display: inline-block;
-	width: 100%;
 }
 
 .dropbtn {
@@ -30,7 +30,7 @@
 
 .dropdown {
 	position: relative;
-	float: left;
+	float: right;
 }
 
 .dropdown-content  {
@@ -65,7 +65,7 @@
 	margin-bottom: 20px;
 	margin-left: 20px;
 	margin-right: 20px;
-	float: left;
+	float: right;
 }
 #kart {
 	color: white;
@@ -77,7 +77,7 @@
 }
 
 #cartIcon {
-	height: 30px;
-	width: 30px;
+	height: 20px;
+	width: 20px;
 }
 
